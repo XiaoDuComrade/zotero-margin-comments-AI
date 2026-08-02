@@ -1,59 +1,187 @@
-# Zotero 页边批注 AI（Margin Comments AI）
+<div align="center">
+  <img src="addon/content/icons/margin-comments.svg" width="104" alt="Margin Comments AI 图标" />
 
-把 Zotero PDF 中高亮、下划线的“评论/解释”显示在离批注最近的页面侧边，用折线连接原批注；卡片可直接点击编辑，并自动保存回原来的 Zotero 批注。独立便签批注也会显示为页边卡片，即使内容暂时为空。
+  <h1>Margin Comments AI</h1>
 
-## 功能
+  <p><strong>把 Zotero PDF 批注放回页面边缘，让 AI 像学者一样阅读与标注论文。</strong></p>
 
-- 位于页面左半区的批注显示在左边，位于右半区的批注显示在右边。
-- Zotero 独立便签显示为可写的页边评论。
-- 左右两列分别进行纵向避让，卡片颜色继承原批注颜色。
-- 当一侧评论超过页面高度时，页面底部折叠为“还有 N 条”；展开后仅该侧在页面高度内滚动。
-- 滚动时只显示当前可见评论的引线，滚出边栏视野的评论不会产生穿越正文的引线。
-- 引线从批注的上边缘引出，避免横穿被批注文字。
-- 评论默认最多预览三行，超出部分以省略号结尾；点击预览后展开编辑。
-- 卡片不再显示批注类型和页码，只保留评论内容与必要的保存状态。
-- 鼠标悬停卡片时，卡片轻微放大并浮起；对应引线和 Zotero 原批注同步加重与投影。
-- 卡片使用固定屏幕尺寸，不随 PDF 缩放；PDF 缩小到 80% 以下时自动折叠为一行预览。
-- 点击卡片会选中并定位原批注；点击原批注会高亮对应卡片。
-- 不显示保存按钮；停止输入 700 ms 后自动保存，失焦时也会立即保存。
-- `Ctrl/Cmd + Enter` 可立即保存；`Esc` 取消本次尚未保存的编辑。
-- 批注右键菜单提供“在页边显示/编辑评论”，可以为尚无评论的划线直接打开空卡片。
-- Reader 工具栏按钮可统一显示或隐藏页边批注。
-- 在 Zotero“编辑 → 设置 → 页边批注”中可分别显示或隐藏高亮、下划线、便签、文字批注以及图片/区域旁注；选择会持久保存，并立即应用到所有已打开的 PDF。
-- 设置中提供“缩小便签图标”选项，将 PDF 页面原生便签图标缩小到 14px；点选/拖动区域与旁注引线锚点会同步对齐。该功能有强版本依赖，如遇问题可关闭该选项。
-- 可选的“AI 学术标注”功能参考 [llm-for-zotero](https://github.com/yilewang/llm-for-zotero) 的当前论文上下文方式，在设置中接入 OpenAI Responses API 或 Chat Completions 兼容接口；只有手动点击并确认后才会发送当前 PDF 或其文字层。
-- “补充标注要求”下方提供默认系统提示词折叠区；展开后可查看、选择和复制插件实际使用的学者提示词，补充要求会在请求时追加在其后。
-- 设置页最下方提供独立的“用网页对话”模式。开启后无需 API：点击星光按钮只把提示词复制为纯文本，不复制 PDF；用户自行在网页 AI 中上传当前 PDF、粘贴提示词并发送，完成后复制整段回复，插件会自动识别并进入原文匹配与写入预览。
-- 网页模式通过启动脚本提供的特权桥读取系统剪贴板，兼容 `text/unicode`、`text/plain`、UTF-8 纯文本与 HTML 剪贴板格式，监听最多 30 分钟；优先识别专用结果标记，也兼容省略标记但带有本次任务编号的 JSON。普通复制内容、旧任务回复和其他应用的剪贴板内容不会被当作批注；连续读取失败时会直接提示原因，不再静默等待。再次点击星光按钮可随时停止监听。
-- 页边批注按钮与 AI 星光按钮放在同一个不换行的工具栏分组中，Reader 宽度变化时仍保持固定的左右关系。
-- AI 会返回物理 PDF 页码、逐字原文与专业中文评论；插件只写入能够与 Zotero 文字层可靠匹配的结果，无法匹配的建议会跳过。
-- AI 结果写为真正的 Zotero 高亮批注，统一使用设置中指定的颜色并附加“AI 学术标注”标签，可以用 Zotero 原生颜色或标签筛选整体隐藏。
-- Chat Completions 使用 SSE 流式接收模型的推理与正文增量，避免长时间无上游数据导致代理服务器返回 504；Reader 右上角会显示等待秒数以及“模型正在分析论文/正在接收标注结果”等实时阶段。
-- 长论文会按约 6.4 万字符（通常约 14–16 页）拆成最多 8 个顺序请求；插件会识别论文尾部独立的“References / Bibliography / 参考文献”标题，并跳过其后的纯参考文献页。多批结果按批次交错选取，避免最终批注集中在论文开头。
-- Chat 长分块的输出 token 上限同时根据文字量和批注数计算，避免推理模型在生成 JSON 前耗尽额度；插件会读取流式 `finish_reason`，把“推理耗尽”“JSON 被截断”和“无正文”区分为明确错误。某一批合法返回空 `annotations` 时会继续处理后续批次，不再中止整篇论文。
-- 若服务商中途关闭 SSE，错误会指出失败的是第几批，而不再只显示含义不明的 `Error in input stream`。
-- AI 运行时会在 Reader 右上角显示“读取文字层、模型分析、接收结果、匹配原文、写入批注”等阶段；再次点击星光按钮可以取消，连接或流式响应连续 240 秒没有新数据时会自动终止并显示错误。
-- 请求取消控制器从 Zotero 的 DOM Window 创建，兼容插件模块全局不提供 `AbortController` 的 Zotero 9 环境；确认后的初始化异常也会直接显示，不再静默退出。
-- 网络层不再读取 `Services.appShell.hiddenDOMWindow`，避免部分 Zotero 配置中的 `NS_ERROR_FAILURE`；请求超时改用不依赖额外 DOM Window 的 Promise 保护。
-- Responses 模式在分析完成后会尝试删除服务商上的临时上传文件；Chat Completions 模式发送 Zotero 提取的带物理页码文字层，不上传 PDF 文件。
-- 缩放、旋转、窗口变化和页面重绘后自动重算引线位置。
-- 旁注挂载在 PDF.js 页面之外的独立覆盖层；缩放时即使 PDF.js 清空页面内部节点，也不会删除卡片和引线。
-- 缩放时复用现有卡片，并连续逐帧同步覆盖层位置，避免旁注消失或闪烁。
-- 页面实际尺寸与 PDF.js `viewport` 更新不同步时，按实时页面盒子校正锚点，避免缩放瞬间串位。
-- 卡片高度会被缓存，缩放帧跳过未变化的 DOM 属性，并使用常数时间索引定位卡片，降低密集批注时的卡顿。
-- 文档没有可显示旁注时不保留侧栏或覆盖层，PDF 页面恢复 Zotero 原生宽度与缩放中心。
-- 支持浅色/深色界面，不修改 PDF 文件，也不另建批注数据库。
+  <p>
+    <a href="releases/margin-comments-ai-0.10.3.xpi"><img src="https://img.shields.io/badge/下载-0.10.3-7C3AED?style=for-the-badge&logo=zotero&logoColor=white" alt="下载 0.10.3" /></a>
+  </p>
 
-## 兼容性
+  <p>
+    <img src="https://img.shields.io/badge/Zotero-9.0-CC2936?style=flat-square&logo=zotero&logoColor=white" alt="Zotero 9.0" />
+    <img src="https://img.shields.io/badge/Tests-42%20passed-22C55E?style=flat-square" alt="42 tests passed" />
+    <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript 5.8" />
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-0EA5E9?style=flat-square" alt="AGPL-3.0-only License" /></a>
+  </p>
 
-目标版本为 Zotero 9，已按本机 Zotero 9.0.6 Reader 源码适配。工具栏和右键菜单使用 Zotero Reader 插件事件；页内卡片和坐标转换必须进入 PDF.js 视图，因此 Zotero 未来大版本更新时可能需要调整 `reader-adapter.ts`。
+  <p>
+    <a href="#-主要功能">主要功能</a> ·
+    <a href="#-安装">安装</a> ·
+    <a href="#-ai-学术标注">AI 标注</a> ·
+    <a href="#-设置">设置</a> ·
+    <a href="#-开发与构建">开发</a>
+  </p>
+</div>
 
-AI 版支持 OpenAI Responses API 和 OpenAI 兼容的 `/chat/completions`。默认协议为“自动检测”：优先尝试 Responses；服务端明确要求 `messages` 时自动切换 Chat Completions；API 地址直接以 `/chat/completions` 结尾时则直接使用 Chat。Responses 模式发送 PDF（单个文件必须小于 50 MB），Chat 模式发送 Zotero 提取的带物理页码文字层，按约 6.4 万字符分批且最多拆分为 8 次请求。默认 API 地址为 `https://api.openai.com/v1`、默认模型为 `gpt-4.1`，均可在“编辑 → 设置 → 页边批注 → AI 学术标注”中修改。
+---
 
-## 构建
+## ✨ 项目简介
+
+Margin Comments AI 将 Zotero 的高亮、下划线、便签、文字与区域批注显示为 PDF 页面两侧的可编辑卡片，并用引线连接原批注。评论直接保存回 Zotero，不修改 PDF 文件，也不建立额外批注数据库。
+
+在此基础上，插件可以通过 API 或网页对话让大模型分析当前论文，把返回内容定位为真正的 Zotero 高亮批注。所有 AI 批注使用统一颜色和标签，后续可以使用 Zotero 原生筛选功能整体显示或隐藏。
+
+> [!IMPORTANT]
+> 当前版本面向 **Zotero 9.0.x**，并已按 Zotero 9.0.6 Reader 结构适配。
+
+## 🚀 主要功能
+
+| 页边阅读体验 | Zotero 原生协作 |
+| --- | --- |
+| 批注按页面位置自动分布到左右两侧 | 评论自动保存回原 Zotero 批注 |
+| 引线从批注上边缘引出，避免遮挡正文 | 跟随颜色、标签和搜索筛选同步显隐 |
+| 长评论三行预览，密集评论折叠并滚动 | 支持高亮、下划线、便签、文字和区域批注 |
+| 悬停时卡片、引线和原批注同步浮起 | 点击卡片定位原批注，点击批注高亮卡片 |
+| 缩放、旋转和页面重绘后保持对齐 | 支持浅色、深色与只读批注 |
+
+### 📝 可直接编辑的页边评论
+
+- 点击卡片即可选择、复制、粘贴和编辑文字。
+- 停止输入约 700 ms 后自动保存，失焦时立即保存。
+- `Ctrl/Cmd + Enter` 立即保存，`Esc` 取消尚未保存的编辑。
+- 单侧评论超过页面高度时折叠为“还有 N 条”，展开后在当前页边栏内滚动。
+- PDF 缩小到 80% 以下时自动收成一行预览，卡片字号不随缩放改变。
+
+### 🎯 更稳的 Reader 布局
+
+- 卡片挂载在 PDF.js 页面之外，缩放重绘时不会被 PDF.js 一并清除。
+- 缩放期间复用现有卡片并逐帧同步位置，减少消失、闪烁和瞬时串位。
+- 没有可显示旁注时不占用页面两侧空间，PDF 始终以页面中线为缩放中心。
+- 原生便签图标可选缩小到 14px，点击框、拖动区域和引线锚点同步缩放。
+
+> [!CAUTION]
+> “缩小便签图标”依赖 Zotero Reader 的内部实现。如升级 Zotero 后出现点击或定位异常，请先关闭该选项。
+
+## ✨ AI 学术标注
+
+插件提供两条彼此独立的工作路径：
+
+| API 模式 | 网页对话模式 |
+| --- | --- |
+| 在 Zotero 设置中填写兼容接口、密钥和模型 | 不在插件中填写 API Key |
+| Responses 模式可发送 PDF；Chat 模式发送文字层 | 插件只复制任务提示词，用户自行在网页 AI 上传 PDF |
+| 支持 SSE 流式返回和长论文分批处理 | 模型回复复制回剪贴板后由插件识别 |
+| 适合自动化、可重复的标注流程 | 适合已有网页订阅或不稳定的兼容 API |
+
+### AI 最终会写入什么？
+
+- 物理 PDF 页码对应的逐字原文高亮；
+- 面向研究方法、证据、结论、限制与学术价值的中文评论；
+- 设置中指定的统一批注颜色；
+- `AI 学术标注` 标签，方便整体筛选和隐藏。
+
+模型结果不会直接盲写。插件会先在 Zotero 文字层中逐字匹配引文，只预览和写入定位可靠的结果，无法匹配的建议会被跳过。
+
+```mermaid
+flowchart LR
+    A["打开当前 PDF"] --> B{"选择分析方式"}
+    B -->|"API"| C["Responses 发送 PDF<br/>Chat 发送文字层"]
+    B -->|"网页对话"| D["复制提示词<br/>手动上传 PDF"]
+    C --> E["模型返回页码、原文与评论"]
+    D --> E
+    E --> F["本地逐字匹配 Zotero 文字层"]
+    F --> G["预览可写入结果"]
+    G --> H["生成 Zotero 高亮、评论与标签"]
+```
+
+### 长论文如何处理
+
+Chat Completions 模式会把长论文按约 6.4 万字符拆成最多 8 个顺序请求，自动识别论文尾部的 References、Bibliography 或“参考文献”标题，并跳过其后的纯参考文献页。各批候选会交错合并，避免最终批注只集中在论文开头。
+
+Responses 模式支持 PDF 文件输入，单个文件需小于 50 MB；Chat 模式不上传 PDF，只发送 Zotero 提取的带物理页码文字层。
+
+## 📦 安装
+
+### 1. 下载插件
+
+[⬇️ 下载 `margin-comments-ai-0.10.3.xpi`](releases/margin-comments-ai-0.10.3.xpi)
+
+仓库中的 [`releases/`](releases/) 目录保留了历史安装包。这里的安装包是普通仓库文件，不依赖 GitHub Release。
+
+### 2. 安装到 Zotero
+
+1. 打开 Zotero。
+2. 进入“工具 → 插件”。
+3. 点击右上角齿轮，选择“从文件安装插件”。
+4. 选择刚下载的 `.xpi` 文件并按提示完成安装。
+5. 打开任意 PDF，在 Reader 工具栏中使用页边批注与星光按钮。
+
+## ⚡ 快速开始
+
+### 使用页边批注
+
+1. 在 PDF 中创建高亮、下划线或便签，并填写评论。
+2. 评论会自动出现在离批注最近的页面边缘。
+3. 点击卡片直接编辑，修改会自动保存回 Zotero。
+4. 使用 Reader 工具栏按钮统一隐藏或恢复页边批注。
+
+### 使用 API 标注
+
+1. 打开“编辑 → 设置 → 页边批注 → AI 学术标注”。
+2. 启用 AI，填写 API 地址、API Key 和模型名称。
+3. 选择自动检测、Responses 或 Chat Completions，并测试连接。
+4. 打开 PDF，点击工具栏星光按钮并确认发送。
+5. 检查定位预览，确认后写入 Zotero。
+
+### 使用网页对话
+
+1. 在设置底部开启“用网页对话”。
+2. 点击 Reader 星光按钮，插件会把本次任务提示词复制为纯文本。
+3. 在网页 AI 中自行上传当前 PDF，粘贴提示词并发送。
+4. 复制模型的完整回复；插件识别后会显示匹配与写入预览。
+
+## ⚙️ 设置
+
+设置入口位于“**编辑 → 设置 → 页边批注**”。修改会持久保存，并立即应用到所有已打开的 PDF。
+
+- **显示的批注类型**：高亮、下划线、便签、文字、图片与区域。
+- **阅读器外观**：可选将 Zotero 原生便签图标缩小到 14px。
+- **AI 学术标注**：协议、API 地址、密钥、模型、统一颜色和每篇最多批注数。
+- **补充标注要求**：在默认学者提示词之后追加研究重点。
+- **网页对话**：不用 API，通过纯文本提示词和剪贴板结果完成标注。
+
+## 🔐 隐私与边界
+
+- 插件启动或打开 PDF 时不会自动请求外部服务；只有点击星光按钮并确认后才开始分析。
+- API Key 保存在本机 Zotero 插件首选项中，不写入运行日志，但该位置不是操作系统密码保险库。
+- Responses 模式使用远端文件时会在任务结束后尝试删除临时文件；最终数据策略仍取决于服务商。
+- 网页对话模式不会复制 PDF，用户需要自行决定向哪个网页服务上传文件。
+- 纯扫描 PDF、损坏文字层、模型改写引文或跨页引文可能无法可靠定位，因此不会强行写入。
+- API 费用、数据保留、训练与地区政策由所选服务商决定，请在上传前自行确认。
+
+## 🧩 兼容性
+
+- **目标版本**：Zotero 9.0.x。
+- **已适配环境**：Zotero 9.0.6。
+- **API**：OpenAI Responses API、OpenAI 兼容的 `/chat/completions`，以及无需 API 的网页对话流程。
+- **暂不支持**：Anthropic Messages、Gemini 原生协议、本地 OCR 和版面分析。
+
+Reader 页面结构与坐标转换依赖 Zotero 内置 PDF.js，未来 Zotero 大版本更新后可能需要同步调整 `reader-adapter.ts`。
+
+## 🛠️ 开发与构建
+
+### 环境
+
+- Node.js 22+
+- pnpm
+- PowerShell
+
+### 构建命令
 
 ```powershell
-corepack pnpm install --offline --store-dir '..\.pnpm-store'
+corepack pnpm install
 corepack pnpm run typecheck
 corepack pnpm test
 corepack pnpm run stress
@@ -61,10 +189,22 @@ corepack pnpm run build
 corepack pnpm run verify:xpi
 ```
 
-本次生成的 XPI 位于 `build/margin-comments-ai-0.10.3.xpi`。每次构建还会把带版本号的安装包复制到 `releases/`；后续构建清理 `build/` 时不会删除历史版本。压力测试结果见 `docs/performance.md`。
+生成的 XPI 位于 `build/margin-comments-ai-0.10.3.xpi`，并会自动复制到 `releases/` 保留。常规测试目前包含 9 个测试文件、42 项测试。
 
-## 安装
+## 📚 开发文档
 
-Zotero → 工具 → 插件 → 右上角齿轮 → 从文件安装插件，然后选择生成的 XPI。首次测试建议使用单独的 Zotero 测试配置文件。
+- [AI 学术标注的数据流与可靠性边界](docs/ai-annotation.md)
+- [Zotero 9.0.6 人工验收清单](docs/manual-smoke-test.md)
+- [密集批注性能与压力测试](docs/performance.md)
 
-人工验收清单见 `docs/manual-smoke-test.md`。
+## 🙏 参考与致谢
+
+- [MuiseDestiny/zotero-gpt](https://github.com/MuiseDestiny/zotero-gpt)：README 信息层级与 Zotero AI 交互设计参考。
+- [yilewang/llm-for-zotero](https://github.com/yilewang/llm-for-zotero)：当前论文上下文与 AI 阅读流程参考。
+- [Zotero](https://www.zotero.org/)：批注数据、Reader 与 PDF 阅读体验。
+
+## 📄 License
+
+Copyright © 2026 XiaoDuComrade。
+
+本项目使用 [GNU Affero General Public License v3.0 only](LICENSE)。如果你修改并传播本项目，或通过网络向用户提供修改版功能，需要按照 AGPL-3.0 的要求向相应用户提供对应源代码。

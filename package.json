@@ -4,7 +4,7 @@
   "private": true,
   "description": "AI-assisted editable margin comment cards with leader lines for Zotero PDF annotations",
   "author": "Local Zotero Plugin",
-  "license": "MIT",
+  "license": "AGPL-3.0-only",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/XiaoDuComrade/zotero-margin-comments-AI.git"
