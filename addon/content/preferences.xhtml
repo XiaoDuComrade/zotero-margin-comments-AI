@@ -1,0 +1,197 @@
+<vbox id="zotero-prefpane-margincomments"
+      onload="Zotero.MarginComments.controller.registerPreferencePaneWindow(window)">
+  <groupbox data-search-strings-raw="页边批注,旁注,批注类型,高亮,下划线,划线,便签,文字,图片,区域,图标,尺寸,缩小,AI,大模型,API,学术标注,网页对话,剪贴板">
+    <label>
+      <html:h2 class="zmc-prefs-heading">旁注显示</html:h2>
+    </label>
+    <description class="zmc-prefs-description">
+      选择需要显示在 PDF 页面两侧的 Zotero 批注类型。修改会立即应用到所有已打开的 PDF。
+    </description>
+  </groupbox>
+
+  <groupbox>
+    <label>
+      <html:h2 class="zmc-prefs-heading">显示的批注类型</html:h2>
+    </label>
+    <html:div class="zmc-prefs-type-list">
+      <html:label class="zmc-prefs-type-row" for="zmc-prefs-type-highlight">
+        <html:input id="zmc-prefs-type-highlight"
+                    type="checkbox"
+                    data-zmc-type="highlight"
+                    preference="extensions.zotero.margincomments.types.highlight" />
+        <html:span>高亮</html:span>
+      </html:label>
+      <html:label class="zmc-prefs-type-row" for="zmc-prefs-type-underline">
+        <html:input id="zmc-prefs-type-underline"
+                    type="checkbox"
+                    data-zmc-type="underline"
+                    preference="extensions.zotero.margincomments.types.underline" />
+        <html:span>下划线</html:span>
+      </html:label>
+      <html:label class="zmc-prefs-type-row" for="zmc-prefs-type-note">
+        <html:input id="zmc-prefs-type-note"
+                    type="checkbox"
+                    data-zmc-type="note"
+                    preference="extensions.zotero.margincomments.types.note" />
+        <html:span>便签</html:span>
+      </html:label>
+      <html:label class="zmc-prefs-type-row" for="zmc-prefs-type-text">
+        <html:input id="zmc-prefs-type-text"
+                    type="checkbox"
+                    data-zmc-type="text"
+                    preference="extensions.zotero.margincomments.types.text" />
+        <html:span>文字批注</html:span>
+      </html:label>
+      <html:label class="zmc-prefs-type-row" for="zmc-prefs-type-image">
+        <html:input id="zmc-prefs-type-image"
+                    type="checkbox"
+                    data-zmc-type="image"
+                    preference="extensions.zotero.margincomments.types.image" />
+        <html:span>图片与区域</html:span>
+      </html:label>
+    </html:div>
+  </groupbox>
+
+  <groupbox>
+    <label>
+      <html:h2 class="zmc-prefs-heading">阅读器外观</html:h2>
+    </label>
+    <html:label class="zmc-prefs-option-row" for="zmc-prefs-compact-note-icons">
+      <html:input id="zmc-prefs-compact-note-icons"
+                  type="checkbox"
+                  data-zmc-setting="compact-note-icons"
+                  preference="extensions.zotero.margincomments.compactNoteIcons" />
+      <html:span>
+        <html:strong>缩小便签图标</html:strong>
+        <html:small>缩小PDF页面原生便签图标到14px。</html:small>
+        <html:small>注：该功能有强版本依赖，如遇bug请关闭该选项。</html:small>
+      </html:span>
+    </html:label>
+  </groupbox>
+
+  <groupbox>
+    <label>
+      <html:h2 class="zmc-prefs-heading">AI 学术标注</html:h2>
+    </label>
+    <description class="zmc-prefs-description">
+      参考 llm-for-zotero 的当前论文上下文方式，将你手动确认的当前 PDF 或文字层发送到 Responses API 或 Chat Completions 兼容接口。模型结果只有在与 Zotero PDF 原文可靠匹配后才会写入。
+    </description>
+
+    <html:label class="zmc-prefs-option-row" for="zmc-prefs-ai-enabled">
+      <html:input id="zmc-prefs-ai-enabled"
+                  type="checkbox"
+                  data-zmc-ai-setting="enabled"
+                  preference="extensions.zotero.margincomments.ai.enabled" />
+      <html:span>
+        <html:strong>启用 AI 学术标注</html:strong>
+        <html:small>开启后，PDF Reader 工具栏会显示 AI 标注按钮；打开 PDF 不会自动上传。</html:small>
+      </html:span>
+    </html:label>
+
+    <html:div class="zmc-ai-settings">
+      <html:label class="zmc-ai-field" for="zmc-prefs-ai-api-protocol">
+        <html:span>接口协议</html:span>
+        <html:select id="zmc-prefs-ai-api-protocol"
+                     data-zmc-ai-setting="apiProtocol">
+          <html:option value="auto">自动检测（推荐）</html:option>
+          <html:option value="responses">OpenAI Responses API</html:option>
+          <html:option value="chat-completions">Chat Completions API</html:option>
+        </html:select>
+        <html:small>自动模式优先使用 Responses API；若服务端要求 messages，则自动切换到 Chat Completions。</html:small>
+      </html:label>
+
+      <html:label class="zmc-ai-field" for="zmc-prefs-ai-api-base">
+        <html:span>API 地址</html:span>
+        <html:input id="zmc-prefs-ai-api-base"
+                    type="url"
+                    data-zmc-ai-setting="apiBase"
+                    placeholder="https://api.openai.com/v1" />
+        <html:small>填写到版本路径，例如 https://api.openai.com/v1；也可直接粘贴 /responses 或 /chat/completions 完整地址。</html:small>
+      </html:label>
+
+      <html:label class="zmc-ai-field" for="zmc-prefs-ai-api-key">
+        <html:span>API Key</html:span>
+        <html:input id="zmc-prefs-ai-api-key"
+                    type="password"
+                    data-zmc-ai-setting="apiKey"
+                    autocomplete="off"
+                    placeholder="sk-…" />
+        <html:small>保存在本机 Zotero 插件首选项中，不会写入运行日志；本地无鉴权接口可以留空。</html:small>
+      </html:label>
+
+      <html:label class="zmc-ai-field" for="zmc-prefs-ai-model">
+        <html:span>模型</html:span>
+        <html:input id="zmc-prefs-ai-model"
+                    type="text"
+                    data-zmc-ai-setting="model"
+                    placeholder="gpt-4.1" />
+        <html:small>Responses 模式需要模型支持 PDF；Chat Completions 模式使用 PDF 文字层。模型名称以服务商文档为准。</html:small>
+      </html:label>
+
+      <html:div class="zmc-ai-field-row">
+        <html:label class="zmc-ai-field" for="zmc-prefs-ai-color">
+          <html:span>统一批注颜色</html:span>
+          <html:input id="zmc-prefs-ai-color"
+                      type="color"
+                      data-zmc-ai-setting="color" />
+          <html:small>所有 AI 批注使用这一颜色，便于之后按颜色整体隐藏。</html:small>
+        </html:label>
+
+        <html:label class="zmc-ai-field" for="zmc-prefs-ai-max-annotations">
+          <html:span>每篇最多批注数</html:span>
+          <html:input id="zmc-prefs-ai-max-annotations"
+                      type="number"
+                      min="1"
+                      max="40"
+                      step="1"
+                      data-zmc-ai-setting="maxAnnotations" />
+          <html:small>建议 10–20 条，避免成本和页面拥挤。</html:small>
+        </html:label>
+      </html:div>
+
+      <html:label class="zmc-ai-field" for="zmc-prefs-ai-custom-instructions">
+        <html:span>补充标注要求（可选）</html:span>
+        <html:textarea id="zmc-prefs-ai-custom-instructions"
+                       rows="3"
+                       data-zmc-ai-setting="customInstructions"
+                       placeholder="例如：重点评价研究方法与统计证据。" />
+      </html:label>
+
+      <html:details class="zmc-ai-default-prompt">
+        <html:summary>查看默认系统提示词</html:summary>
+        <html:small>补充标注要求会附加在下列默认提示词之后；接口所需的 JSON 格式约束由插件另行添加。</html:small>
+        <html:pre data-zmc-ai-default-prompt="true"
+                  aria-label="默认系统提示词"></html:pre>
+      </html:details>
+
+      <html:div class="zmc-ai-test-row">
+        <html:button type="button" data-zmc-ai-test="true">测试连接</html:button>
+        <html:span data-zmc-ai-status="true" aria-live="polite"></html:span>
+      </html:div>
+
+      <html:p class="zmc-ai-privacy-note">
+        隐私提示：只有点击 Reader 工具栏的 AI 按钮并确认后，当前 PDF 才会发送到上述服务商。请确认你有权上传该文献，并了解服务商的数据与计费政策。
+      </html:p>
+    </html:div>
+  </groupbox>
+
+  <groupbox>
+    <label>
+      <html:h2 class="zmc-prefs-heading">网页对话</html:h2>
+    </label>
+    <description class="zmc-prefs-description">
+      不调用 API，改用任意支持 PDF 的网页 AI 完成分析。原有 API 功能和设置会保留。
+    </description>
+    <html:label class="zmc-prefs-option-row" for="zmc-prefs-ai-web-chat-enabled">
+      <html:input id="zmc-prefs-ai-web-chat-enabled"
+                  type="checkbox"
+                  data-zmc-ai-setting="webChatEnabled"
+                  preference="extensions.zotero.margincomments.ai.webChatEnabled" />
+      <html:span>
+        <html:strong>用网页对话</html:strong>
+        <html:small>开启后，点击 Reader 的星光按钮只会把学术标注提示词作为纯文本复制到剪贴板，不会复制 PDF。请自行在网页 AI 中上传当前 PDF，再粘贴提示词并发送。</html:small>
+        <html:small>模型完成后复制整段回复；插件会监听最多 30 分钟，并按本次任务编号识别结果、匹配原文和准备写入预览。再次点击星光按钮可取消。</html:small>
+      </html:span>
+    </html:label>
+  </groupbox>
+</vbox>

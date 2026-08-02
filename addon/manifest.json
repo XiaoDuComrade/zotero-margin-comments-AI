@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "__addonName__",
+  "version": "__buildVersion__",
+  "description": "在 Zotero PDF 页边显示带引线、可直接编辑的批注评论",
+  "icons": {
+    "48": "content/icons/margin-comments.svg",
+    "96": "content/icons/margin-comments.svg"
+  },
+  "applications": {
+    "zotero": {
+      "id": "__addonID__",
+      "strict_min_version": "9.0",
+      "strict_max_version": "9.0.*"
+    }
+  }
+}

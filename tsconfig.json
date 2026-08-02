@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["node", "zotero-types"]
+  },
+  "include": ["src", "tests", "vitest.config.ts", "zotero-plugin.config.ts"],
+  "exclude": ["build"]
+}

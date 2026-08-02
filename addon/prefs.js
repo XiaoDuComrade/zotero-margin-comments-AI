@@ -1,0 +1,16 @@
+pref("extensions.zotero.margincomments.enabled", true);
+pref("extensions.zotero.margincomments.types.highlight", true);
+pref("extensions.zotero.margincomments.types.underline", true);
+pref("extensions.zotero.margincomments.types.note", true);
+pref("extensions.zotero.margincomments.types.text", true);
+pref("extensions.zotero.margincomments.types.image", true);
+pref("extensions.zotero.margincomments.compactNoteIcons", false);
+pref("extensions.zotero.margincomments.ai.enabled", false);
+pref("extensions.zotero.margincomments.ai.webChatEnabled", false);
+pref("extensions.zotero.margincomments.ai.apiProtocol", "auto");
+pref("extensions.zotero.margincomments.ai.apiBase", "https://api.openai.com/v1");
+pref("extensions.zotero.margincomments.ai.apiKey", "");
+pref("extensions.zotero.margincomments.ai.model", "gpt-4.1");
+pref("extensions.zotero.margincomments.ai.color", "#a28ae5");
+pref("extensions.zotero.margincomments.ai.maxAnnotations", 18);
+pref("extensions.zotero.margincomments.ai.customInstructions", "");

@@ -1,0 +1,196 @@
+#zotero-prefpane-margincomments {
+  max-width: 720px;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-heading {
+  margin-block: 0 6px;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-description {
+  max-width: 620px;
+  margin-bottom: 8px;
+  color: color-mix(in srgb, currentColor 68%, transparent);
+  line-height: 1.5;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-type-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 4px 18px;
+  max-width: 560px;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-type-row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 32px;
+  padding: 2px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-type-row:hover {
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-type-row input {
+  margin: 0;
+  accent-color: #4a78c2;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-option-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  max-width: 620px;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-option-row:hover {
+  background: color-mix(in srgb, currentColor 7%, transparent);
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-option-row input {
+  margin: 2px 0 0;
+  accent-color: #4a78c2;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-option-row span {
+  display: grid;
+  gap: 3px;
+}
+
+#zotero-prefpane-margincomments .zmc-prefs-option-row small {
+  color: color-mix(in srgb, currentColor 68%, transparent);
+  line-height: 1.45;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-settings {
+  display: grid;
+  gap: 12px;
+  max-width: 620px;
+  margin: 8px 5px 0 32px;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-field {
+  display: grid;
+  gap: 5px;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-field > span {
+  font-weight: 600;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-field input:not([type="color"]),
+#zotero-prefpane-margincomments .zmc-ai-field select,
+#zotero-prefpane-margincomments .zmc-ai-field textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 30px;
+  padding: 5px 7px;
+  border: 1px solid color-mix(in srgb, currentColor 24%, transparent);
+  border-radius: 5px;
+  background: Field;
+  color: FieldText;
+  font: inherit;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-field textarea {
+  resize: vertical;
+  line-height: 1.45;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-field input[type="color"] {
+  width: 64px;
+  height: 32px;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-field small,
+#zotero-prefpane-margincomments .zmc-ai-default-prompt > small,
+#zotero-prefpane-margincomments .zmc-ai-privacy-note {
+  color: color-mix(in srgb, currentColor 68%, transparent);
+  line-height: 1.45;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-default-prompt {
+  margin-top: -3px;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-default-prompt > summary {
+  width: max-content;
+  padding: 2px 1px;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-default-prompt > small {
+  display: block;
+  margin: 4px 0 7px 18px;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-default-prompt > pre {
+  box-sizing: border-box;
+  width: 100%;
+  max-height: 240px;
+  margin: 0;
+  padding: 10px 12px;
+  overflow: auto;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 5px;
+  background: color-mix(in srgb, currentColor 4%, Field);
+  color: FieldText;
+  font: 12px/1.55 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-field-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(180px, 1fr);
+  gap: 18px;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-test-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-test-row button {
+  min-height: 30px;
+  padding: 4px 12px;
+}
+
+#zotero-prefpane-margincomments [data-zmc-ai-status][data-state="success"] {
+  color: #2d7d46;
+}
+
+#zotero-prefpane-margincomments [data-zmc-ai-status][data-state="error"] {
+  color: #bd3f37;
+}
+
+#zotero-prefpane-margincomments .zmc-ai-privacy-note {
+  margin: 2px 0 8px;
+  padding: 9px 11px;
+  border-left: 3px solid #a28ae5;
+  background: color-mix(in srgb, #a28ae5 9%, transparent);
+}
+
+@media (max-width: 620px) {
+  #zotero-prefpane-margincomments .zmc-prefs-type-list {
+    grid-template-columns: 1fr;
+  }
+
+  #zotero-prefpane-margincomments .zmc-ai-settings {
+    margin-left: 5px;
+  }
+
+  #zotero-prefpane-margincomments .zmc-ai-field-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "zotero-margin-comments-ai",
+  "version": "0.10.3",
+  "private": true,
+  "description": "AI-assisted editable margin comment cards with leader lines for Zotero PDF annotations",
+  "author": "Local Zotero Plugin",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiaoDuComrade/zotero-margin-comments-AI.git"
+  },
+  "config": {
+    "addonName": "Margin Comments AI",
+    "addonID": "margin-comments@local.zotero",
+    "addonRef": "margincomments",
+    "addonInstance": "MarginComments",
+    "prefsPrefix": "extensions.zotero.margincomments"
+  },
+  "scripts": {
+    "build": "powershell -ExecutionPolicy Bypass -File scripts/build-versioned.ps1",
+    "test": "vitest run",
+    "stress": "vitest run --config vitest.stress.config.ts",
+    "typecheck": "tsc --noEmit",
+    "verify:xpi": "powershell -ExecutionPolicy Bypass -File scripts/verify-xpi.ps1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.1",
+    "happy-dom": "^18.0.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.4",
+    "zotero-plugin-scaffold": "^0.6.0",
+    "zotero-types": "^3.1.9"
+  }
+}
