@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 164 96" role="img" aria-labelledby="title description">
+  <title id="title">Margin Comments AI</title>
+  <desc id="description">左侧为页边批注图标，右侧为紫蓝色魔法星光图标</desc>
+
+  <defs>
+    <linearGradient id="magic-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a855f7"/>
+      <stop offset="0.5" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#0ea5e9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 原页边批注图标 -->
+  <g>
+    <rect x="8" y="10" width="46" height="76" rx="6" fill="#fff" stroke="#4a5568" stroke-width="5"/>
+    <path d="M19 30h25M19 42h21M19 54h25" stroke="#d6a800" stroke-width="6" stroke-linecap="round"/>
+    <path d="M50 45h12l8-7" fill="none" stroke="#d6a800" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="68" y="27" width="22" height="34" rx="5" fill="#ffd84d" stroke="#9b7800" stroke-width="4"/>
+    <path d="M74 38h10M74 46h10M74 54h7" stroke="#725800" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- AI 魔法星光 -->
+  <g fill="url(#magic-gradient)">
+    <path d="M127 14c1.7 15.3 8.1 22.1 23 24-14.9 1.9-21.3 8.7-23 24-1.7-15.3-8.1-22.1-23-24 14.9-1.9 21.3-8.7 23-24Z"/>
+    <path d="M151 10c.7 6.3 3.4 9.1 9.5 10-6.1.9-8.8 3.7-9.5 10-.7-6.3-3.4-9.1-9.5-10 6.1-.9 8.8-3.7 9.5-10Z"/>
+    <path d="M105 61c.9 8 4.2 11.6 12 12.5-7.8.9-11.1 4.5-12 12.5-.9-8-4.2-11.6-12-12.5 7.8-.9 11.1-4.5 12-12.5Z"/>
+  </g>
+</svg>

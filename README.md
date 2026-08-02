@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="addon/content/icons/margin-comments.svg" width="104" alt="Margin Comments AI 图标" />
+  <img src="docs/margin-comments-ai-logo.svg" width="180" alt="Margin Comments AI 图标：左侧为页边批注，右侧为魔法星光" />
 
   <h1>Margin Comments AI</h1>
 
